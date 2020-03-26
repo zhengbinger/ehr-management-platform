@@ -1,0 +1,93 @@
+plugins {
+    id 'org.springframework.boot' version '2.1.4.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'java'
+}
+
+group = 'com.sensetime.ehr'
+version = '0.0.1-SNAPSHOT'
+
+apply plugin: 'groovy'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+configurations {
+    mybatisGenerator
+}
+
+repositories {
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    maven { url 'https://repo.spring.io/milestone' }
+    maven { url "https://plugins.gradle.org/m2/" }
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.0.1'
+    implementation 'com.github.pagehelper:pagehelper-spring-boot-starter:1.2.3'
+    implementation 'tk.mybatis:mapper-spring-boot-starter:1.2.4'
+    implementation 'org.apache.commons:commons-pool2'
+    implementation 'org.apache.commons:commons-lang3:3.9'
+    implementation 'org.projectlombok:lombok'
+    implementation 'com.alibaba:fastjson:1.2.58'
+    implementation 'mysql:mysql-connector-java'
+    implementation 'io.springfox:springfox-swagger2:2.9.2'
+    implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+    implementation 'org.mybatis.generator:mybatis-generator-core:1.3.7'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    mybatisGenerator 'org.mybatis.generator:mybatis-generator-core:1.3.7'
+    mybatisGenerator 'mysql:mysql-connector-java'
+    mybatisGenerator 'tk.mybatis:mapper:4.1.5'
+    mybatisGenerator 'com.itfsw:mybatis-generator-plugin:1.3.2'
+
+}
+
+jar {
+    manifest {
+        attributes "Manifest-Version": 1.0, 'Main-Class': 'com.sensetime.ehr.emp.EmpApplication'
+    }
+}
+
+def getDbProperties = {
+    def properties = new Properties()
+    file("src/main/resources/application-dev.properties").withInputStream { inputStream ->
+        properties.load(inputStream)
+    }
+    properties;
+}
+
+task mybatisGenerate {
+    def properties = getDbProperties()
+    ant.properties['targetProject'] = projectDir.path
+    ant.properties['driverClass'] = properties.getProperty("spring.datasource.driver-class-name")
+    ant.properties['connectionURL'] = properties.getProperty("spring.datasource.url")
+    ant.properties['userId'] = properties.getProperty("spring.datasource.username")
+    ant.properties['password'] = properties.getProperty("spring.datasource.password")
+    ant.properties['src_main_java'] = sourceSets.main.java.srcDirs[0].path
+    ant.properties['src_main_resources'] = sourceSets.main.resources.srcDirs[0].path
+    ant.taskdef(
+            name: 'mbgenerator',
+            classname: 'org.mybatis.generator.ant.GeneratorAntTask',
+            classpath: configurations.mybatisGenerator.asPath
+    )
+    ant.mbgenerator(overwrite: true,
+            configfile: projectDir.path + '/src/main/resources/generatorConfig.xml', verbose: true) {
+        propertyset {
+            propertyref(name: 'targetProject')
+            propertyref(name: 'userId')
+            propertyref(name: 'driverClass')
+            propertyref(name: 'connectionURL')
+            propertyref(name: 'password')
+            propertyref(name: 'src_main_java')
+            propertyref(name: 'src_main_resources')
+        }
+    }
+}
