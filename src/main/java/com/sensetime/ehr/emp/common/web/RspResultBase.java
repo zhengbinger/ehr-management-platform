@@ -7,6 +7,7 @@ package com.sensetime.ehr.emp.common.web;
  * @author zhengbing_vendor
  */
 public class RspResultBase<T> {
+
     private String result = RspStatus.Result.SUCCESS;
     private T detail;
     private String errMsg;
@@ -26,7 +27,6 @@ public class RspResultBase<T> {
     public void setDetail(T detail) {
         this.detail = detail;
     }
-
 
     public void setError(String msg) {
         this.setResult(RspStatus.Result.FAIL);

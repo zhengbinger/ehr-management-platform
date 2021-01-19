@@ -1,7 +1,7 @@
 package com.sensetime.ehr.emp.service.impl;
 
-import com.sensetime.ehr.emp.entity.SysUserAdmin;
-import com.sensetime.ehr.emp.service.SysUserAdminService;
+import com.sensetime.ehr.emp.entity.SysUser;
+import com.sensetime.ehr.emp.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 public class UserDetailServiceImpl implements UserDetailsService {
 
     @Autowired
-    private SysUserAdminService sysUserAdminService;
+    private SysUserService sysUserService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -29,11 +29,11 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
         System.out.println(passwordEncoder.encode("123456"));
 
-        SysUserAdmin user = sysUserAdminService.loadUserByUsername(username);
+        SysUser user = sysUserService.loadUserByUsername(username);
         // 判断用户是否存在
         if (user == null) {
             throw new UsernameNotFoundException("用户名不存在");
         }
-        return new User(user.getLoginName(), user.getLoginPassword(), AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+        return new User(user.getLoginAccount(), user.getLoginPassword(), AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
     }
 }

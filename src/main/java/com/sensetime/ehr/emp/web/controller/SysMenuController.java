@@ -5,9 +5,9 @@ import com.sensetime.ehr.emp.common.web.PageDataList;
 import com.sensetime.ehr.emp.common.web.PageRspResult;
 import com.sensetime.ehr.emp.common.web.RspResult;
 import com.sensetime.ehr.emp.common.web.RspStatus;
-import com.sensetime.ehr.emp.entity.SysResources;
-import com.sensetime.ehr.emp.service.SysResourcesService;
-import com.sensetime.ehr.emp.web.model.SysResourcesModel;
+import com.sensetime.ehr.emp.entity.SysMenu;
+import com.sensetime.ehr.emp.service.SysMenuService;
+import com.sensetime.ehr.emp.web.model.SysMenuModel;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -24,20 +24,20 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2020/3/24
  **/
 @RestController
-@RequestMapping("/resources")
+@RequestMapping("/menu")
 @Api(value = "", tags = "系统资源相关接口，提供菜单，banner等相关的管理")
-public class SysResoucesController implements BaseController<SysResourcesModel, Long> {
+public class SysMenuController implements BaseController<SysMenuModel, Long> {
 
     @Autowired
-    private SysResourcesService sysResourcesService;
+    private SysMenuService sysMenuService;
 
     @Override
     @ApiOperation(value = "分页查询")
-    public PageRspResult<SysResourcesModel> list(@RequestBody SysResourcesModel sysResourcesModel, Pageable pageable) {
-        PageRspResult<SysResourcesModel> pageResult = sysResourcesService.pageable(sysResourcesModel, pageable);
+    public PageRspResult<SysMenuModel> list(@RequestBody SysMenuModel sysMenuModel, Pageable pageable) {
+        PageRspResult<SysMenuModel> pageResult = sysMenuService.pageable(sysMenuModel, pageable);
         if (null == pageResult) {
             pageResult = new PageRspResult<>();
-            PageDataList<SysResourcesModel> pageDataList = new PageDataList<>();
+            PageDataList<SysMenuModel> pageDataList = new PageDataList<>();
             pageDataList.setCurPage(0);
             pageDataList.setPageSize(10);
             pageDataList.setTotalSize(0L);
@@ -49,10 +49,10 @@ public class SysResoucesController implements BaseController<SysResourcesModel, 
 
     @Override
     @ApiOperation(value = "根据主键获取资源明细")
-    public RspResult<SysResourcesModel> findById(Long id) {
-        RspResult<SysResourcesModel> result = new RspResult<>();
-        SysResources resoueces = sysResourcesService.selectByKey(id);
-        SysResourcesModel model = new SysResourcesModel();
+    public RspResult<SysMenuModel> findById(Long id) {
+        RspResult<SysMenuModel> result = new RspResult<>();
+        SysMenu resoueces = sysMenuService.selectByKey(id);
+        SysMenuModel model = new SysMenuModel();
         if (null != resoueces) {
             BeanUtils.copyProperties(resoueces, model);
             result.setDetail(model);
@@ -64,13 +64,13 @@ public class SysResoucesController implements BaseController<SysResourcesModel, 
 
     @Override
     @ApiOperation(value = "新增资源信息")
-    public RspResult<SysResourcesModel> save(SysResourcesModel sysResourcesModel) {
-        RspResult<SysResourcesModel> result = new RspResult<>();
+    public RspResult<SysMenuModel> save(SysMenuModel sysMenuModel) {
+        RspResult<SysMenuModel> result = new RspResult<>();
 
-        if (null != sysResourcesModel) {
-            SysResources resource = new SysResources();
-            BeanUtils.copyProperties(sysResourcesModel, resource);
-            sysResourcesService.save(resource);
+        if (null != sysMenuModel) {
+            SysMenu resource = new SysMenu();
+            BeanUtils.copyProperties(sysMenuModel, resource);
+            sysMenuService.save(resource);
             result.setResult(RspStatus.Result.SUCCESS);
         } else {
             result.setResult(RspStatus.Result.FAIL);
@@ -82,18 +82,18 @@ public class SysResoucesController implements BaseController<SysResourcesModel, 
     @Override
     public RspResult<Boolean> deleteByKey(Long id) {
         RspResult<Boolean> result = new RspResult<>();
-        sysResourcesService.delete(id);
+        sysMenuService.delete(id);
         result.setDetail(true);
         return result;
     }
 
     @Override
-    public RspResult<SysResourcesModel> modify(SysResourcesModel sysResourcesModel) {
-        RspResult<SysResourcesModel> result = new RspResult<>();
-        if (null != sysResourcesModel) {
-            SysResources resource = new SysResources();
-            BeanUtils.copyProperties(sysResourcesModel, resource);
-            sysResourcesService.updateNotNull(resource);
+    public RspResult<SysMenuModel> modify(SysMenuModel sysMenuModel) {
+        RspResult<SysMenuModel> result = new RspResult<>();
+        if (null != sysMenuModel) {
+            SysMenu resource = new SysMenu();
+            BeanUtils.copyProperties(sysMenuModel, resource);
+            sysMenuService.updateNotNull(resource);
             result.setResult(RspStatus.Result.SUCCESS);
         } else {
             result.setResult(RspStatus.Result.FAIL);

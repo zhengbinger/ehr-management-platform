@@ -52,11 +52,6 @@
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
 
-        <!--资源链接-->
-        <table tableName="sys_resources" domainObjectName="SysResources">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-
         <table tableName="sys_dictionary" domainObjectName="SysDictionary">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride column="en_us" jdbcType="VARCHAR"/>
@@ -71,19 +66,15 @@
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
-        <table tableName="roles" domainObjectName="Roles">
+        <table tableName="sys_role" domainObjectName="sysRole">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <table tableName="sys_menu" domainObjectName="SysMenu">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
         <table tableName="role_permission" domainObjectName="RolePermission">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-
-        <table tableName="hr_managers" domainObjectName="HrManagers">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-
-        <table tableName="hr_target_group" domainObjectName="HrTargetGroup">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>

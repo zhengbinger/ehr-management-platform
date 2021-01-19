@@ -17,12 +17,11 @@ import java.util.Properties;
 
 /***
  *
- * @Description: 持久化拦截器
- * @author: 张正泉  623109458@qq.com
- * @date: 2017/11/6 16:23
- * @version: V1.0
+ * @author 张正泉  623109458@qq.com
+ * @date 2017/11/6 16:23
+ * @version V1.0
  */
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings({ "unchecked"})
 @Intercepts({@Signature(type = Executor.class, method = "update", args = {MappedStatement.class, Object.class})})
 public class RepositoryInterceptor implements Interceptor {
 
@@ -63,7 +62,7 @@ public class RepositoryInterceptor implements Interceptor {
         for (Field field : fields) {
             String fieldName = field.getName();
             if (ReflectHelper.getFieldValue(parameter, fieldName) == null) {
-                if ("delFlag".equals(fieldName) || "createDate".equals(fieldName) || "updateDate".equals(fieldName)) {
+                if ("delFlag".equals(fieldName) || "createTime".equals(fieldName) || "updateTime".equals(fieldName)) {
                     setDefault(field, parameter);
                 }
             }
@@ -93,7 +92,7 @@ public class RepositoryInterceptor implements Interceptor {
     private void updateSingle(Field[] fields, Object parameter) {
         for (Field field : fields) {
             String fieldName = field.getName();
-            if ("updateDate".equals(fieldName)) {
+            if ("updateTime".equals(fieldName)) {
                 setDefault(field, parameter);
             }
         }

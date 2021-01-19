@@ -13,8 +13,8 @@ import lombok.Data;
  * @date 2020/3/24
  **/
 @Data
-@ApiModel(discriminator = "系统资源信息")
-public class SysResourcesModel implements BaseModel {
+@ApiModel(discriminator = "系统菜单")
+public class SysMenuModel implements BaseModel {
 
     @ApiModelProperty(value = "唯一id", name = "id")
     @JSONField(name = "id")
