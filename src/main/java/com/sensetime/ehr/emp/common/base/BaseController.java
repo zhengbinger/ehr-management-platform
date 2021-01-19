@@ -44,7 +44,7 @@ public interface BaseController<T, PK> {
     RspResult<T> save(@RequestBody T t);
 
     /**
-     * 根据主键删除接口
+     * 根据主键删除数据接口
      *
      * @param id SerializableKey
      * @return RspResult<T>

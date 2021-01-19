@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Bean 工具类
  * @author zhengbing_vendor
  */
 public abstract class AbstractBeanUtils extends BeanUtils {

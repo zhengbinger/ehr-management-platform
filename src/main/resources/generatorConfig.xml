@@ -67,7 +67,7 @@
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
-        <table tableName="sys_user_admin" domainObjectName="SysUserAdmin">
+        <table tableName="sys_user" domainObjectName="SysUser">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
